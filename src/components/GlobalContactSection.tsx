@@ -141,7 +141,7 @@ export default function GlobalContactSection() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      placeholder="Your full name"
+                      placeholder="Name"
                       className="w-full bg-transparent border-b border-white/30 text-white placeholder:text-white/40 focus:border-white focus:outline-none pb-2.5 text-base font-normal transition-colors"
                     />
                   </div>
@@ -186,14 +186,14 @@ export default function GlobalContactSection() {
                       HOW CAN WE HELP?
                     </label>
                     <span className="text-[11px] text-white/50 tracking-wider">
-                      {formData.message.length} / 200
+                      {formData.message.length} / 70
                     </span>
                   </div>
                   <textarea
                     id="message"
                     name="message"
                     rows={5}
-                    maxLength={200}
+                    maxLength={70}
                     value={formData.message}
                     onChange={handleInputChange}
                     required
