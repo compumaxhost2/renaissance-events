@@ -186,14 +186,14 @@ export default function GlobalContactSection() {
                       HOW CAN WE HELP?
                     </label>
                     <span className="text-[11px] text-white/50 tracking-wider">
-                      {formData.message.length} / 70
+                      {formData.message.length} / 50
                     </span>
                   </div>
                   <textarea
                     id="message"
                     name="message"
                     rows={5}
-                    maxLength={70}
+                    maxLength={50}
                     value={formData.message}
                     onChange={handleInputChange}
                     required
