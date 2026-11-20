@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CookieConsent from './components/CookieConsent';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
@@ -33,7 +32,6 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
-      <CookieConsent />
     </div>
   );
 }
