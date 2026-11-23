@@ -416,25 +416,25 @@ export default function Home() {
               ease: [0.2, 0.8, 0.25, 1],
             }}
             style={{ willChange: 'clip-path, opacity' }}
-            className="relative z-10 w-full h-full flex flex-col justify-center px-6 pt-32 pb-16"
+            className="relative z-10 w-full h-full flex flex-col px-6 pt-24 sm:pt-28 pb-8"
           >
-            <div className="space-y-6">
-              {/* Bold Editorial Headline (Badge removed completely) */}
+            <div className="my-auto space-y-6 sm:space-y-7">
+              {/* Bold Editorial Headline (Perfect balance of above and below space) */}
               <motion.div
                 initial={false}
                 animate={animStage === 'revealed' ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-3"
               >
-                <h1 className="font-serif text-white tracking-tight leading-[1.12]">
-                  <span className="block text-2xl sm:text-3xl text-white/95 font-normal">
+                <h1 className="font-serif text-white tracking-tight leading-[1.1]">
+                  <span className="block text-3xl sm:text-4xl text-white/95 font-normal">
                     Let’s create something
                   </span>
-                  <span className="block text-[2.5rem] sm:text-5xl font-medium text-white mt-1">
+                  <span className="block text-[2.85rem] sm:text-5xl lg:text-6xl font-medium text-white mt-1 tracking-tight">
                     unforgettable
                   </span>
                 </h1>
-                <p className="text-white/85 text-sm sm:text-base leading-relaxed font-sans pt-1 max-w-[360px]">
+                <p className="text-white/90 text-[15px] sm:text-base leading-relaxed font-sans pt-1 max-w-[400px]">
                   We bring events to life through expert planning, creative production, and seamless execution, creating memorable experiences of every scale.
                 </p>
               </motion.div>
@@ -448,7 +448,7 @@ export default function Home() {
               >
                 <Link
                   to="/contact"
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-[#06369c] text-xs uppercase tracking-[0.18em] font-bold shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white text-[#06369c] text-xs uppercase tracking-[0.2em] font-bold shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-transform"
                 >
                   <span>Plan Your Event</span>
                   <ArrowRight className="w-4 h-4" />
@@ -456,7 +456,7 @@ export default function Home() {
 
                 <Link
                   to="/services"
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-full border border-white/35 hover:border-white text-white text-xs uppercase tracking-[0.18em] font-medium text-center backdrop-blur-sm active:scale-95 transition-all"
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-full border border-white/40 hover:border-white text-white text-xs uppercase tracking-[0.2em] font-semibold text-center backdrop-blur-sm active:scale-95 transition-all"
                 >
                   Explore Services
                 </Link>
