@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { ChevronDown, Play, Pause, Sparkles, ArrowRight } from 'lucide-react';
+import { ChevronDown, Play, Pause, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import GlobalContactSection from '../components/GlobalContactSection';
 
@@ -90,12 +90,12 @@ export default function Home() {
       if (vDesktop) {
         vDesktop.defaultMuted = true;
         vDesktop.muted = true;
-        vDesktop.play().catch(() => {});
+        vDesktop.play().catch(() => { });
       }
       if (vMobile) {
         vMobile.defaultMuted = true;
         vMobile.muted = true;
-        vMobile.play().catch(() => {});
+        vMobile.play().catch(() => { });
       }
     };
 
@@ -206,7 +206,7 @@ export default function Home() {
             loop
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
             onPlay={() => setIsPaused(false)}
             onPause={() => setIsPaused(true)}
             className="absolute inset-0 w-full h-full object-cover"
