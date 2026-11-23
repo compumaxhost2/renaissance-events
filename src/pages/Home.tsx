@@ -130,9 +130,6 @@ export default function Home() {
   const paragraph1Text = "With over 30 years of experience, Renaissance Meetings & Special Events is a full-service event management and marketing firm creating memorable brand experiences. From conferences and special events to fundraising and sponsorships, we combine creativity, strategy, and expertise to deliver unique experiences that connect people, elevate brands, and bring our clients' visions to life.";
   const paragraph1Words = paragraph1Text.split(" ");
 
-  const paragraph2Text = "";
-  const paragraph2Words = paragraph2Text.split(" ");
-
   // Framer Motion Animation Variants
   const headlineContainerVariants = {
     hidden: { opacity: 0 },
@@ -152,17 +149,6 @@ export default function Home() {
       transition: {
         staggerChildren: 0.012,
         delayChildren: 0.2,
-      },
-    },
-  };
-
-  const p2ContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.025,
-        delayChildren: 0.95,
       },
     },
   };
@@ -550,27 +536,6 @@ export default function Home() {
               </span>
             ))}
           </motion.p>
-
-          {/* Paragraph 2 Word-by-Word Scroll Reveal */}
-          {paragraph2Text.trim().length > 0 && (
-            <motion.p
-              variants={p2ContainerVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              className="text-[#06369c] text-lg sm:text-xl lg:text-2xl leading-relaxed font-medium flex flex-wrap justify-center gap-x-[0.25em] gap-y-1.5"
-            >
-              {paragraph2Words.map((word, index) => (
-                <span key={index} className="inline-block overflow-hidden py-0.5">
-                  <motion.span
-                    variants={bodyWordVariants}
-                    className="inline-block"
-                  >
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
-            </motion.p>
-          )}
         </div>
       </section>
 
