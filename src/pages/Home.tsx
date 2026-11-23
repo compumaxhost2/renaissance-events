@@ -207,7 +207,7 @@ export default function Home() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
+        className="relative h-[82vh] sm:h-[85vh] lg:h-screen w-full flex items-center justify-center overflow-hidden bg-black"
       >
         {/* DESKTOP & LAPTOP HERO: Video Player (hidden on mobile & tablets, visible on lg+) */}
         <motion.div
@@ -426,11 +426,14 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-3"
               >
-                <h1 className="font-serif text-white tracking-tight leading-[1.1]">
-                  <span className="block text-3xl sm:text-4xl text-white/95 font-normal">
-                    Let’s create something
+                <h1 className="font-serif text-white leading-[1.04]">
+                  <span className="block text-[2.45rem] sm:text-5xl text-white/95 font-normal tracking-tight">
+                    Let’s create
                   </span>
-                  <span className="block text-[2.85rem] sm:text-5xl lg:text-6xl font-medium text-white mt-1 tracking-tight">
+                  <span className="block text-[2.45rem] sm:text-5xl text-white/95 font-normal tracking-tight mt-1">
+                    something
+                  </span>
+                  <span className="block text-[2.65rem] sm:text-6xl font-medium text-white mt-2 tracking-[0.13em]">
                     unforgettable
                   </span>
                 </h1>
