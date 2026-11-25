@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
+import CookieConsent from './components/CookieConsent';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,6 +29,7 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
+      <CookieConsent />
     </div>
   );
 }
