@@ -8,11 +8,20 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(min-width: 1024px)').matches : true
+  );
   const textSectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(textSectionRef, { once: true, amount: 0.15 });
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('hero-logo-pressed'));
+
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const handleChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    setIsDesktop(mediaQuery.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   const togglePlayPause = () => {
@@ -61,7 +70,7 @@ export default function Home() {
       window.removeEventListener('touchstart', handleFirstInteraction);
       window.removeEventListener('scroll', handleFirstInteraction);
     };
-  }, []);
+  }, [isDesktop]);
 
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 600], [0, 180]);
@@ -139,56 +148,62 @@ export default function Home() {
         ref={heroRef}
         className="relative h-[100svh] lg:h-screen w-full flex items-center justify-center overflow-hidden bg-black"
       >
-        {/* DESKTOP & LAPTOP HERO: Video Player (hidden on mobile & tablets, visible on lg+) */}
-        <motion.div
-          style={{ y: heroY, scale: heroScale, opacity: heroDim }}
-          className="hidden lg:block absolute inset-0 bg-black overflow-hidden"
-        >
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            onPlay={() => setIsPaused(false)}
-            onPause={() => setIsPaused(true)}
-            className="absolute inset-0 w-full h-full object-cover"
+        {/* DESKTOP & LAPTOP HERO: Only mounted on lg+ so mobile never downloads the 47MB desktop video */}
+        {isDesktop && (
+          <motion.div
+            style={{ y: heroY, scale: heroScale, opacity: heroDim }}
+            className="absolute inset-0 bg-black overflow-hidden"
           >
-            <source src="/images/video.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </motion.div>
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              onPlay={() => setIsPaused(false)}
+              onPause={() => setIsPaused(true)}
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src="/images/video.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </motion.div>
+        )}
 
         {/* Video Play / Pause Toggle Button (Desktop & Laptop only - lg+) */}
-        <button
-          onClick={togglePlayPause}
-          className="hidden lg:flex absolute bottom-14 right-6 sm:bottom-[60px] sm:right-[7.2%] z-20 group w-16 h-16 sm:w-[82px] sm:h-[82px] rounded-full border border-white/35 hover:border-white bg-black/95 hover:bg-black text-white items-center justify-center backdrop-blur-md shadow-xl transition-transform duration-300 cursor-pointer hover:scale-105 active:scale-95"
-          aria-label={isPaused ? 'Play background video' : 'Pause background video'}
-          title={isPaused ? 'Play video' : 'Pause video'}
-        >
-          {isPaused ? (
-            <Play className="w-5 h-5 fill-white text-white translate-x-0.5 transition-transform duration-300 group-hover:scale-110" />
-          ) : (
-            <Pause className="w-5 h-5 fill-white text-white transition-transform duration-300 group-hover:scale-110" />
-          )}
-        </button>
-
-        {/* MOBILE & TABLET HERO: Full-bleed Mobile Video (lg:hidden) */}
-        <div className="lg:hidden absolute inset-0 bg-black overflow-hidden">
-          <video
-            ref={mobileVideoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+        {isDesktop && (
+          <button
+            onClick={togglePlayPause}
+            className="flex absolute bottom-14 right-6 sm:bottom-[60px] sm:right-[7.2%] z-20 group w-16 h-16 sm:w-[82px] sm:h-[82px] rounded-full border border-white/35 hover:border-white bg-black/95 hover:bg-black text-white items-center justify-center backdrop-blur-md shadow-xl transition-transform duration-300 cursor-pointer hover:scale-105 active:scale-95"
+            aria-label={isPaused ? 'Play background video' : 'Pause background video'}
+            title={isPaused ? 'Play video' : 'Pause video'}
           >
-            <source src="/images/reniasaace%20mobile.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
+            {isPaused ? (
+              <Play className="w-5 h-5 fill-white text-white translate-x-0.5 transition-transform duration-300 group-hover:scale-110" />
+            ) : (
+              <Pause className="w-5 h-5 fill-white text-white transition-transform duration-300 group-hover:scale-110" />
+            )}
+          </button>
+        )}
+
+        {/* MOBILE & TABLET HERO: Fast-start H.264 Mobile Video */}
+        {!isDesktop && (
+          <div className="absolute inset-0 bg-black overflow-hidden">
+            <video
+              ref={mobileVideoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            >
+              <source src="/images/renaissance-mobile.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        )}
 
         {/* Scroll Button (Desktop / Laptop only - hidden on mobile) */}
         <motion.button
