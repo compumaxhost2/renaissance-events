@@ -83,15 +83,12 @@ export default function Header() {
           {/* Logo */}
           <Link
             to="/"
-            className={cn(
-              "group flex items-center py-1 shrink-0",
-              isHomePage && !isScrolled ? "max-lg:hidden" : "flex"
-            )}
+            className="group flex items-center py-1 shrink-0"
           >
             <img
               src="/images/logo.png"
               alt="Renaissance logo"
-              className="h-22 sm:h-28 lg:h-36 max-w-[320px] sm:max-w-[440px] lg:max-w-[560px] w-auto object-contain transition-all duration-500 filter drop-shadow-xl"
+              className="h-20 sm:h-24 lg:h-36 max-w-[320px] sm:max-w-[440px] lg:max-w-[560px] w-auto object-contain transition-all duration-500 filter drop-shadow-xl"
             />
           </Link>
 

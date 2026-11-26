@@ -14,20 +14,57 @@ export default function GlobalContactSection() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company || 'N/A',
+          message: formData.message,
+        }),
+      });
+
+      const rawText = await response.text();
+      let data: { success?: boolean; message?: string } = {};
+      if (rawText) {
+        try {
+          data = JSON.parse(rawText) as { success?: boolean; message?: string };
+        } catch {
+          throw new Error('Server returned an invalid response. Please try again.');
+        }
+      }
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to send inquiry. Please try again or email us directly.');
+      }
+
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', company: '', message: '' });
       setTimeout(() => setSubmitSuccess(false), 5000);
-    }, 1200);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong. Please email info@renaissanceevents.com directly.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const titleContainerVariants = {
@@ -79,10 +116,10 @@ export default function GlobalContactSection() {
   return (
     <section ref={sectionRef} className="relative py-10 sm:py-12 lg:py-16 bg-renaissance-blue text-white overflow-hidden">
       <div className="max-w-screen-2xl 2xl:max-w-[1600px] 3xl:max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
 
           {/* Left Column: Oversized Editorial Typography */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-6 lg:pt-4">
             <motion.div
               variants={titleContainerVariants}
               initial="hidden"
@@ -115,6 +152,14 @@ export default function GlobalContactSection() {
                     Your Next Event
                   </motion.span>
                 </p>
+                <motion.div variants={titleLineVariants} className="pt-6">
+                  <a
+                    href="mailto:info@renaissanceevents.com"
+                    className="inline-block text-lg sm:text-xl font-sans font-medium tracking-wide text-white/90 underline underline-offset-4 hover:text-white transition-colors"
+                  >
+                    info@renaissanceevents.com
+                  </a>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -218,7 +263,7 @@ export default function GlobalContactSection() {
                   </button>
                 </div>
 
-                {/* Success Message Banner */}
+                {/* Success / Error Message Banners */}
                 <AnimatePresence>
                   {submitSuccess && (
                     <motion.div
@@ -229,6 +274,16 @@ export default function GlobalContactSection() {
                     >
                       <CheckCircle2 className="w-5 h-5 text-green-300" />
                       <span>Thank you. Your message has been sent successfully.</span>
+                    </motion.div>
+                  )}
+                  {submitError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="p-4 bg-red-500/20 border border-red-300/40 text-white rounded-xl text-sm font-sans font-medium"
+                    >
+                      <span>{submitError}</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
