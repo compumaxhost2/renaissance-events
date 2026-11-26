@@ -25,7 +25,7 @@ export default function Home() {
   }, []);
 
   const togglePlayPause = () => {
-    const video = videoRef.current;
+    const video = isDesktop ? videoRef.current : mobileVideoRef.current;
     if (!video) return;
     if (video.paused) {
       video.play().then(() => setIsPaused(false)).catch(() => { });
@@ -171,21 +171,19 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* Video Play / Pause Toggle Button (Desktop & Laptop only - lg+) */}
-        {isDesktop && (
-          <button
-            onClick={togglePlayPause}
-            className="flex absolute bottom-14 right-6 sm:bottom-[60px] sm:right-[7.2%] z-20 group w-16 h-16 sm:w-[82px] sm:h-[82px] rounded-full border border-white/35 hover:border-white bg-black/95 hover:bg-black text-white items-center justify-center backdrop-blur-md shadow-xl transition-transform duration-300 cursor-pointer hover:scale-105 active:scale-95"
-            aria-label={isPaused ? 'Play background video' : 'Pause background video'}
-            title={isPaused ? 'Play video' : 'Pause video'}
-          >
-            {isPaused ? (
-              <Play className="w-5 h-5 fill-white text-white translate-x-0.5 transition-transform duration-300 group-hover:scale-110" />
-            ) : (
-              <Pause className="w-5 h-5 fill-white text-white transition-transform duration-300 group-hover:scale-110" />
-            )}
-          </button>
-        )}
+        {/* Video Play / Pause Toggle Button (Desktop & Mobile) */}
+        <button
+          onClick={togglePlayPause}
+          className="flex absolute bottom-6 right-5 sm:bottom-10 sm:right-8 lg:bottom-[60px] lg:right-[7.2%] z-20 group w-16 h-16 sm:w-[82px] sm:h-[82px] rounded-full border border-white/35 hover:border-white bg-black/95 hover:bg-black text-white items-center justify-center backdrop-blur-md shadow-xl transition-transform duration-300 cursor-pointer hover:scale-105 active:scale-95"
+          aria-label={isPaused ? 'Play background video' : 'Pause background video'}
+          title={isPaused ? 'Play video' : 'Pause video'}
+        >
+          {isPaused ? (
+            <Play className="w-5 h-5 fill-white text-white translate-x-0.5 transition-transform duration-300 group-hover:scale-110" />
+          ) : (
+            <Pause className="w-5 h-5 fill-white text-white transition-transform duration-300 group-hover:scale-110" />
+          )}
+        </button>
 
         {/* MOBILE & TABLET HERO: Fast-start H.264 Mobile Video */}
         {!isDesktop && (
@@ -197,6 +195,8 @@ export default function Home() {
               muted
               playsInline
               preload="auto"
+              onPlay={() => setIsPaused(false)}
+              onPause={() => setIsPaused(true)}
               className="absolute inset-0 w-full h-full object-cover object-center"
             >
               <source src="/images/renaissance-mobile.mp4" type="video/mp4" />
